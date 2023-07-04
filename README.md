@@ -45,7 +45,7 @@ Ici il s'agit de comment installer et cofiguer le projet chez soit
 
 
 ```http
-  GET /api/token/
+  POST /api/token/
 ```
 
 | Parameter | Type     | Description                       |
