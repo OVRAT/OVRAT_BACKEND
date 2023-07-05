@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import  timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,7 +54,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':[
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication'
-    ]
+    ],
+
+    'SIMPLE_JWT': {
+        'ACCESS_TOKEN_LIFETIME': timedelta(hours=24),
+        'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+        'ROTATE_REFRESH_TOKENS': False,
+        'BLACKLIST_AFTER_ROTATION': True,
+        'UPDATE_LAST_LOGIN': False,
+    }
 }
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -137,3 +146,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+EMAIL_BACKEND  = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'danieltiomelajou@gmail.com'
+EMAIL_HOST_PASSWORD = 'wezozxwzulcqlpuf'
+
