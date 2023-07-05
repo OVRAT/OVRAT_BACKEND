@@ -201,7 +201,7 @@ Ici il s'agit de comment installer et cofiguer le projet chez soit
 
 
 ```http
-  POST /api/token/
+  POST :  /api/token/
 ```
 
 | Parameter | Type     | Description                       |
@@ -209,6 +209,61 @@ Ici il s'agit de comment installer et cofiguer le projet chez soit
 | `username`      | `string` | **Required**.  |
 | `password`      | `string` | **Required**.  |
 
+
 ici il s'agit de la route qui va permettre d'avoir un token d'authentification
+#### update profille
+
+```http
+  GET, POST :  update_profile/
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `last_name`      | `string` | **Required**.  |
+| `first_name`      | `string` | **Not required**.  |
+| `email`      | `string` | **Required**.  |
+| `username`      | `string` | **Required**.  |
+
+
+#### change password
+
+```http
+POST :  change_password/
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `old_password`      | `string` | **Required**.  |
+| `password`      | `string` | **Required**.  |
+| `confirm_password`      | `string` | **Required**.  |
+
+
+#### reset password get token in email
+
+```http
+POST :  reset_password_get_token/
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `email`      | `string` | **Required**.  |
+
+
+#### reset password get token in email
+
+```http
+POST :  reset_password_confirm/{uidb64}/{token}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `email`      | `string` | **Required**.  |
+
+| Url Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `uidb64`      | `userid in base64` | **Required**.  |
+| `token`      | `string` | **Required**.  |
+
+
 
 
