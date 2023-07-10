@@ -265,5 +265,126 @@ POST :  reset_password_confirm/{uidb64}/{token}
 | `token`      | `string` | **Required**.  |
 
 
+#### cources categories
+
+```http
+  GET /api/categories/
+```
+###### Json Returning
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `int` |  |
+| `name`      | `string` |  |
+
+
+#### courses 
+
+```http
+  GET /api/courses/
+  POST /api/courses/
+```
+###### Json Returning
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `int` |  |
+| `name`      | `string` |  |
+| `description`      | `string` |  |
+| `instructor`      | `User` |  |
+| `categories`      | `Array of gategories` |  |
+
+###### Json Watting for POST method
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `name`      | `string` |  **Required** |
+| `description`      | `string` |   **Required**|
+| `instructor`      | `User` | **Required**  |
+| `categories`      | `Array of gategories` |  **Required** |
+
+
+##### Single course
+
+```http
+  GET /api/courses/{id}/
+  PUT  /api/courses/{id}/
+  DELETE /api/courses/{id}/
+
+```
+###### Json Returning
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `int` | |
+| `name`      | `string` | |
+| `description`      | `string` |  |
+| `instructor`      | `User` |  |
+| `categories`      | `Array of gategories` |  |
+
+
+###### Json Watting for POST and PUT method
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `name`      | `string` | |
+| `description`      | `string` |  |
+| `instructor`      | `User` |  |
+| `categories`      | `Array of gategories` |  |
+
+
+
+
+
+
+#### courses 
+
+```http
+  GET /api/lessons/
+  POST /api/lessons/
+```
+###### Json Returning
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `int` |  |
+| `name`      | `string` |  |
+| `description`      | `string` |  |
+| `instructor`      | `User` |  |
+| `categories`      | `Array of gategories` |  |
+
+###### Json Watting for POST method
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `name`      | `string` |  **Required** |
+| `description`      | `string` |   **Required**|
+| `instructor`      | `User` | **Required**  |
+| `categories`      | `Array of gategories` |  **Required** |
+
+
+##### Single lesson
+
+```http
+  GET /api/lessons/{id}/
+  PUT  /api/lessons/{id}/
+  DELETE /api/lessons/{id}/
+
+```
+###### Json Returning
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `int` | |
+| `title`      | `string` | |
+| `content`      | `string` |  |
+| `course`      | `Course object` |  |
+
+
+
+###### Json Watting for POST and PUT method
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `title`      | `string` | **Required**|
+| `content`      | `string` |  **Required** |
+| `course`      | `Course object` |   **Required**|
+
+
+
+
 
 

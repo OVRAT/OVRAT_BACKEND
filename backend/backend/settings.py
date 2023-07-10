@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-+$t%+jonry(j-0vdx*xo&2lq#r3f^*7a!jf7!+-d=x^1d(aur!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -59,12 +59,18 @@ REST_FRAMEWORK = {
     
 }
 
-SIMPLE_JWT =  {
-        'ACCESS_TOKEN_LIFETIME': timedelta(hours=24),
-        'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-        'ROTATE_REFRESH_TOKENS': False,
-        'BLACKLIST_AFTER_ROTATION': True,
-        'UPDATE_LAST_LOGIN': False,
+# SIMPLE_JWT =  {
+#         'ACCESS_TOKEN_LIFETIME': timedelta(hours=24),
+#         'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+#         'ROTATE_REFRESH_TOKENS': False,
+#         'BLACKLIST_AFTER_ROTATION': True,
+#         'UPDATE_LAST_LOGIN': False,
+# }
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
 }
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -141,8 +147,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+import os
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

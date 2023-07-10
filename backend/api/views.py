@@ -11,7 +11,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
-
+from django.core.mail import EmailMessage
+from django.templatetags.static import static
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
@@ -170,12 +171,27 @@ def reset_password_get_token(request):
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         reset_password_link = request.build_absolute_uri(f"/reset-password-confirm/{uid}/{token}/")
+        # image_url = request.build_absolute_uri(static('img/Ovrat.PNG'))
 
-        message = render_to_string('reset_password_email.html', {'reset_password_link': reset_password_link})
+        message = render_to_string('reset_password_email.html', {'reset_password_link': reset_password_link, 'img':image_url})
         plain_message = strip_tags(message)
         # send_mail(subjet, message, settings.EMAIL_HOST_USER, [user.email])
-        send_mail('Reset password', plain_message, settings.EMAIL_HOST_USER, [email], fail_silently=True)
+        # send_mail('Reset password', message, settings.EMAIL_HOST_USER, [email], fail_silently=True,  content_subtype='html')
+        # emails = EmailMessage('Bienvenue sur notre site', message,  settings.EMAIL_HOST_USER,  [email,]   )
 
+        send_mail(
+            subject="Reset Password",
+            message=message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[email],
+            html_message=message,
+            # content_subtype='html'
+        )
+
+        # emails.content_subtype = 'html'
+        # emails.send(fail_silently = False)
+	    # emails.send(fail_silently = False)
+	    # # Envoyer l'e-mail
         return Response({'status': 'email envoyé'}, status=status.HTTP_200_OK)
 
     return Response({'error': 'Methode non valide'}, status=status.HTTP_400_BAD_REQUEST)
@@ -203,6 +219,212 @@ def reset_password_confirm(request, uidb64, token):
         user.set_password(password)
         user.save()
 
-        return Response({'status': 'Mot de passe changé avec success'}, status=HTTP_200_OK)
+        return Response({'status': 'Mot de passe changé avec success'}, status=status.HTTP_200_OK)
 
     return Response({'error': 'Invalid request method.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_list(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)   
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def category_list(request):
+    categories = Category.objects.all()
+    serializer = CategorySerializer(categories, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def course_list(request):
+    if request.method == 'GET':
+        courses = Course.objects.all()
+        serializer = CourseSerializer(courses, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = CourseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def course_detail(request, pk):
+    try:
+        course = Course.objects.get(pk=pk)
+    except Course.DoesNotExist:
+        return Response(status=404)
+
+    if request.method == 'GET':
+        serializer = CourseSerializer(course)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = CourseSerializer(course, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+    elif request.method == 'DELETE':
+        course.delete()
+        return Response(status=204)
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def lesson_list(request):
+    if request.method == 'GET':
+        lessons = Lesson.objects.all()
+        serializer = LessonSerializer(lessons, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = LessonSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def lesson_detail(request, pk):
+    try:
+        lesson = Lesson.objects.get(pk=pk)
+    except Lesson.DoesNotExist:
+        return Response(status=404)
+
+    if request.method == 'GET':
+        serializer = LessonSerializer(lesson)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = LessonSerializer(lesson, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+    elif request.method == 'DELETE':
+        lesson.delete()
+        return Response(status=204)
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def quiz_list(request):
+    if request.method == 'GET':
+        quizzes = Quiz.objects.all()
+        serializer = QuizSerializer(quizzes, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = QuizSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def quiz_detail(request, pk):
+    try:
+        quiz = Quiz.objects.get(pk=pk)
+    except Quiz.DoesNotExist:
+        return Response(status=404)
+
+    if request.method == 'GET':
+        serializer = QuizSerializer(quiz)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = QuizSerializer(quiz, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+    elif request.method == 'DELETE':
+        quiz.delete()
+        return Response(status=204)
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def question_list(request):
+    if request.method == 'GET':
+        questions = Question.objects.all()
+        serializer = QuestionSerializer(questions, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = QuestionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def question_detail(request, pk):
+    try:
+        question = Question.objects.get(pk=pk)
+    except Question.DoesNotExist:
+        return Response(status=404)
+
+    if request.method == 'GET':
+        serializer = QuestionSerializer(question)
+        return Response(serializer.data)
+    # elif:
+    #     pass
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def question_detail(request, pk):
+    try:
+        question = Question.objects.get(pk=pk)
+    except Question.DoesNotExist:
+        return Response(status=404)
+
+    if request.method == 'GET':
+        serializer = QuestionSerializer(question)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = QuestionSerializer(question, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+    elif request.method == 'DELETE':
+        question.delete()
+        return Response(status=204)
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def enrollment_list(request):
+    if request.method == 'GET':
+        enrollments = Enrollment.objects.all()
+        serializer = EnrollmentSerializer(enrollments, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = EnrollmentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def enrollment_detail(request, pk):
+    try:
+        enrollment = Enrollment.objects.get(pk=pk)
+    except Enrollment.DoesNotExist:
+        return Response(status=404)
+
+    if request.method == 'GET':
+        serializer = EnrollmentSerializer(enrollment)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = EnrollmentSerializer(enrollment, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+    elif request.method == 'DELETE':
+        enrollment.delete()
+        return Response(status=204)
