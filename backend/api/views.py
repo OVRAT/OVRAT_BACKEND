@@ -10,6 +10,7 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
+from django.utils.html import strip_tags
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -171,8 +172,9 @@ def reset_password_get_token(request):
         reset_password_link = request.build_absolute_uri(f"/reset-password-confirm/{uid}/{token}/")
 
         message = render_to_string('reset_password_email.html', {'reset_password_link': reset_password_link})
+        plain_message = strip_tags(message)
         # send_mail(subjet, message, settings.EMAIL_HOST_USER, [user.email])
-        send_mail('Reset password', message, settings.EMAIL_HOST_USER, [email], fail_silently=True)
+        send_mail('Reset password', plain_message, settings.EMAIL_HOST_USER, [email], fail_silently=True)
 
         return Response({'status': 'email envoyé'}, status=status.HTTP_200_OK)
 

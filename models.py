@@ -1,28 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext_lazy as _
 
-# Create your models here.
 
 class User(AbstractUser):
-    ROLE_TYPE  = [
-        ('ADMIN','ADMIN'),
-        ('SPECIALISTE','SPECIALISTE'),
-        ('ENCADREUR','ENCADREUR'),
-       
-    ]
-    role = models.CharField("Rôle", max_length=50, choices = ROLE_TYPE)
-    # pass
+    pass
 
-class Module(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=255)
-
 
 class Course(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     instructor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='courses_taught')
-    module = models.ManyToManyField(Module, related_name='courses')
-
+    categories = models.ManyToManyField(Category, related_name='courses')
 
 class Lesson(models.Model):
     title = models.CharField(max_length=255)
@@ -37,7 +28,6 @@ class Quiz(models.Model):
 class Question(models.Model):
     question_text = models.TextField()
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
-
 
 class Answer(models.Model):
     answer_text = models.TextField()
@@ -133,4 +123,3 @@ class TimedTestSubmission(models.Model):
     answers = models.ManyToManyField(Answer)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(null=True, blank=True)
-

@@ -56,13 +56,15 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication'
     ],
 
-    'SIMPLE_JWT': {
+    
+}
+
+SIMPLE_JWT =  {
         'ACCESS_TOKEN_LIFETIME': timedelta(hours=24),
         'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
         'ROTATE_REFRESH_TOKENS': False,
         'BLACKLIST_AFTER_ROTATION': True,
         'UPDATE_LAST_LOGIN': False,
-    }
 }
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -157,3 +159,5 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'danieltiomelajou@gmail.com'
 EMAIL_HOST_PASSWORD = 'wezozxwzulcqlpuf'
 
+
+AUTH_USER_MODEL = 'api.User'

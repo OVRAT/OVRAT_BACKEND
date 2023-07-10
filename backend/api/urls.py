@@ -7,5 +7,5 @@ urlpatterns = [
     path("update_profile/", update_profile),
     path("change_password/", change_password),
     path("reset_password_get_token/", reset_password_get_token),
-    path("reset_password_confirm/", reset_password_confirm)
+    path("reset_password_confirm/<uidb64>/<token>/", reset_password_confirm)
 ]
