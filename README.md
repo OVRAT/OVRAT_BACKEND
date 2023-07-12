@@ -354,7 +354,7 @@ POST :  reset_password_confirm/{uidb64}/{token}
 | :-------- | :------- | :-------------------------------- |
 | `name`      | `string` |  **Required** |
 | `description`      | `string` |   **Required**|
-| `instructor`      | `User` | **Required**  |
+| `instructor`      | `User id` | **Required**  |
 | `categories`      | `Array of gategories` |  **Required** |
 
 
@@ -381,7 +381,7 @@ POST :  reset_password_confirm/{uidb64}/{token}
 | :-------- | :------- | :-------------------------------- |
 | `title`      | `string` | **Required**|
 | `content`      | `string` |  **Required** |
-| `course`      | `Course object` |   **Required**|
+| `course`      | `Course id` |   **Required**|
 
 
 

@@ -16,6 +16,11 @@ class User(AbstractUser):
 class Category(models.Model):
     name = models.CharField(max_length=255)
 
+    class Meta:
+        db_table = ''
+        managed = True
+        verbose_name = 'Caterory'
+        verbose_name_plural = 'Caterories'
 class Course(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()

@@ -9,6 +9,7 @@ urlpatterns = [
     path("reset_password_get_token/", reset_password_get_token),
     path("reset_password_confirm/<uidb64>/<token>/", reset_password_confirm),
     path('users/', user_list, name='user-list'),
+    
     path('categories/', category_list, name='category-list'),
     path('courses/', course_list, name='course-list'),
     path('courses/<int:pk>/', course_detail, name='course-detail'),
