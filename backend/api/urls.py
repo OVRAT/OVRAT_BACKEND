@@ -2,6 +2,8 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
+
+    path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('register_user_daniel', register_user_daniel),
     path("api_home", api_home),
     path("update_profile/", update_profile),
