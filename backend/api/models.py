@@ -13,6 +13,10 @@ class User(AbstractUser):
     role = models.CharField("Rôle", max_length=50, choices = ROLE_TYPE)
     # pass
 
+    @property
+    def fullname(self):
+        return f'{self.first_name} {self.last_name}'
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
 

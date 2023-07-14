@@ -19,6 +19,8 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 # Create your views here.
@@ -428,3 +430,30 @@ def enrollment_detail(request, pk):
     elif request.method == 'DELETE':
         enrollment.delete()
         return Response(status=204)
+
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        # Add custom claims to the token
+        token['username'] = user.username
+        token['email'] = user.email
+        return token
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.user
+        # Add user information to the response data
+        response.data['username'] = user.username
+        response.data['email'] = user.email
+        userser = User.objects.get(email = user.email)
+        userserial = UserSerializers(userser)
+        response.data['user'] = userserial.data
+        return response
