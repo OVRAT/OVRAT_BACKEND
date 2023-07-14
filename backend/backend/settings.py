@@ -28,6 +28,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:3000",
+    "http://localhost:3000"
+]
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
@@ -40,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'api.apps.ApiConfig'
+    'api.apps.ApiConfig',
+    'corsheaders',
 ]
 
 
@@ -59,18 +65,11 @@ REST_FRAMEWORK = {
     
 }
 
-# SIMPLE_JWT =  {
-#         'ACCESS_TOKEN_LIFETIME': timedelta(hours=24),
-#         'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-#         'ROTATE_REFRESH_TOKENS': False,
-#         'BLACKLIST_AFTER_ROTATION': True,
-#         'UPDATE_LAST_LOGIN': False,
-# }
-
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': True,
+     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+     'ROTATE_REFRESH_TOKENS': True,
+     'BLACKLIST_AFTER_ROTATION': True
 }
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -80,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'

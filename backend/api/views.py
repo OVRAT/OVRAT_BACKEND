@@ -39,8 +39,8 @@ class UserViewSet(viewsets.ModelViewSet):
 # HTTP_101_SWITCHING_PROTOCOLS
 # HTTP_200_OK
 # HTTP_201_CREATED
-# HTTP_204_NO_CONTENT
 # HTTP_300_MULTIPLE_CHOICES
+# HTTP_204_NO_CONTENT
 # HTTP_301_MOVED_PERMANENTLY
 # HTTP_302_FOUND
 # HTTP_303_SEE_OTHER
@@ -233,7 +233,7 @@ def user_list(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def category_list(request):
     categories = Category.objects.all()
     serializer = CategorySerializer(categories, many=True)
